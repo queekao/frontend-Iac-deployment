@@ -1,0 +1,14 @@
+[
+    {
+        "ParameterKey": "BucketName",
+        "ParameterValue": "<your-s3-bucket>"
+    },
+    {
+        "ParameterKey": "CloudFrontName",
+        "ParameterValue": "<your-cloudFront-name>"
+    },
+    {
+        "ParameterKey": "CloudFrontInvalidationLambdaName",
+        "ParameterValue": "<your-lambda-name>"
+    }
+]

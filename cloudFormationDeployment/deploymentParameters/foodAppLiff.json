@@ -1,0 +1,12 @@
+{
+    "STACK_NAME": "test-frontend-building",
+    "SYNC_FOLDER": "build/",
+    "VERSION": "1.0.0",
+    "REGION": "<AWS_REGION>",
+    "TYPE": "<emun:['normal', 'liff']>",
+    "LINE_CHANNEL_ID": "<LINE_CHANNEL_ID>",
+    "LINE_CHANNEL_SECRET": "<LINE_CHANNEL_SECRET>",
+    "LIFF_NAME": "<LIFF_NAME>",
+    "TEMPLATE_FILE": "cloudFormationDeployment/deploy-s3-cloudFront.yml",
+    "CLOUDFORMATION_PARAMETERS_FILE": "cloudFormationDeployment/cloudFormationParameters/foodAppLiff.json"
+}

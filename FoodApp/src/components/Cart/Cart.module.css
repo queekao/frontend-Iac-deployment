@@ -1,0 +1,101 @@
+/* For Cart Item */
+.cart-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 20rem;
+  overflow: auto;
+}
+.cart-item {
+  color: #302708;
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem 0.7rem 1rem;
+  border-bottom: 0.5px solid #daca90;
+  display: flex;
+  justify-content: space-between;
+}
+.cart-item h2 {
+}
+.cart-item .summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 10rem;
+  font-size: 1rem;
+  margin-left: 0.2rem;
+}
+.cart-item .price {
+  color: #da4a41;
+  font-size: 1.2rem;
+  font-weight: bold;
+  opacity: 0.75;
+}
+.cart-item .amount {
+  color: #302708;
+  border: 0.5px solid #daca90;
+  border-radius: 4px;
+  padding: 0.2rem 0.7rem;
+}
+.cart-item .btnGroup {
+  align-self: flex-end;
+  font-size: 1.4rem;
+}
+.cart-item .btnRemove {
+  border-radius: 4px;
+  color: #302708;
+  background-color: transparent;
+  margin-right: 1rem;
+  padding: 0rem 1rem 0rem 1rem;
+  transition: all 0.3s;
+}
+.cart-item .btnRemove:hover,
+.btnRemove:active {
+  background-color: #5b4b10;
+  color: white;
+}
+.cart-item .btnAdd {
+  border-radius: 4px;
+  padding: 0rem 1rem 0rem 1rem;
+  transition: all 0.3s;
+}
+/* for the sum up */
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  color: #302708;
+}
+.actions {
+  text-align: right;
+}
+
+.actions button {
+  font: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #5b4b10;
+  padding: 0.5rem 2rem;
+  border-radius: 25px;
+  margin-left: 1rem;
+}
+
+.actions button:hover,
+.actions button:active {
+  background-color: #302708;
+  border-color: #302708;
+  color: white;
+}
+
+.actions .button--alt {
+  color: #5b4b10;
+}
+
+.actions .button {
+  background-color: #5b4b10;
+  color: white;
+}

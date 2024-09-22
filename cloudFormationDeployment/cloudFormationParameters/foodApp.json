@@ -1,0 +1,22 @@
+[
+    {
+        "ParameterKey": "DomainName",
+        "ParameterValue": "<your-domain-name>"
+    },
+    {
+        "ParameterKey": "BucketName",
+        "ParameterValue": "<your-s3-bucket>"
+    },
+    {
+        "ParameterKey": "CloudFrontName",
+        "ParameterValue": "<your-cloudFront-name>"
+    },
+    {
+        "ParameterKey": "HostedZoneId",
+        "ParameterValue": "<your-hosted-zone-id>"
+    },
+    {
+        "ParameterKey": "CloudFrontInvalidationLambdaName",
+        "ParameterValue": "<your-lambda-name>"
+    }
+]

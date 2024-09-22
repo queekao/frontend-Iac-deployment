@@ -1,0 +1,10 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.buttonIcon {
+  padding-right: 1.8rem;
+  height: 20px;
+  width: 20px;
+}

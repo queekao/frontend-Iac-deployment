@@ -1,0 +1,72 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 0.5px solid #e4e4e4;
+}
+.meals {
+  max-width: 60rem;
+  width: 90%;
+  margin: 2rem auto;
+  animation: meals-appear 1s ease-out forwards;
+}
+
+.meals ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.meals ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+/* MealItem */
+.meals ul li h3 {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #302708;
+}
+.meals ul li p {
+  margin: 0.5rem 0;
+  color: #484848;
+  font-size: 1rem;
+  font-style: italic;
+}
+.meals ul li span {
+  margin-bottom: 1rem;
+  color: #da4a41;
+  opacity: 0.75;
+  font-weight: bold;
+}
+.error {
+  max-width: 60rem;
+  width: 80%;
+  margin: 2rem auto;
+  color: #da4a41;
+  background-color: #fff;
+  text-align: center;
+  padding: 5% 0;
+  text-justify: center;
+  display: block;
+  border-radius: 40px;
+}
+.mealLoading {
+  text-align: center;
+  color: white;
+}
+/* MealForm */
+.mealForm {
+}
+@keyframes meals-appear {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

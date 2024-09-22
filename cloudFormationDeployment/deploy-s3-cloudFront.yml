@@ -1,0 +1,204 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 and cloudFront deployment for frontend web application
+Parameters:
+  DomainName:
+    Description: The domain name for the ACM Certificate.
+    Type: String
+    Default: ""
+  BucketName:
+    Description: The bucket name for the s3.
+    Type: String
+  CloudFrontName:
+    Description: The cloudFront name.
+    Type: String
+  HostedZoneId:
+    Description: The ID of the existing Route 53 Hosted Zone.
+    Type: String
+    Default: ""
+  CloudFrontInvalidationLambdaName:
+    Description: The cloudfront invalidation creation of Lambda function name.
+    Type: String
+Resources:
+  # S3
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !If
+        - CreateCertificateAndRecord
+        - !Ref BucketName
+        - !Sub "${BucketName}-liff"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+
+  MyBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MyBucket
+      PolicyDocument:
+        Statement:
+          - Sid: !If
+              - CreateCertificateAndRecord
+              - !Sub "${BucketName}-policy"
+              - !Sub "${BucketName}-policy-liff"
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MyOAI}"
+            Action: s3:GetObject
+            Resource: !If
+              - CreateCertificateAndRecord
+              - !Sub "arn:aws:s3:::${BucketName}/*"
+              - !Sub "arn:aws:s3:::${BucketName}-liff/*"
+
+  # CloudFront
+  MyOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "This is a ${CloudFrontName} of cloudFront OAI"
+
+  MyDistribution:
+    # https://aws.amazon.com/cloudfront/pricing/
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !If
+          - CreateCertificateAndRecord
+          - !Sub "This is a ${CloudFrontName} of cloudFront"
+          - !Sub "This is a ${CloudFrontName}-liff of cloudFront"
+        PriceClass: PriceClass_200 # Use North America, Europe, Asia, Middle East, and Africa
+        HttpVersion: http3
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt MyBucket.DomainName
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${MyOAI}"
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ErrorCachingMinTTL: 10
+            ResponsePagePath: /index.html
+            ResponseCode: 200
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized ID
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          # doesn't forward query and cookie string parameters to the `origin`.
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+        ViewerCertificate: !If
+          - CreateCertificateAndRecord
+          - AcmCertificateArn: !Ref MyCertificate
+            SslSupportMethod: "sni-only"
+            # https://aws.amazon.com/about-aws/whats-new/2021/06/amazon-cloudfront-announces-new-tlsv12_2021-security-policy-for-viewer-connections/
+            MinimumProtocolVersion: TLSv1.2_2021
+          - !Ref AWS::NoValue
+        Aliases:
+          - test.queekao.com
+  MyCertificate:
+    Type: "AWS::CertificateManager::Certificate"
+    Condition: CreateCertificateAndRecord
+    Properties:
+      DomainName: !Ref DomainName
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+  AliasCloudFrontRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: CreateCertificateAndRecord
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        HostedZoneId: "Z2FDTNDATAQYW2" # The fixed HostedZoneId for CloudFront
+        DNSName: !GetAtt MyDistribution.DomainName
+  # Lambda function
+  InvalidateLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !If
+        - CreateCertificateAndRecord
+        - !Ref CloudFrontInvalidationLambdaName
+        - !Sub "${CloudFrontInvalidationLambdaName}-liff"
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: |
+          const { CloudFrontClient, CreateInvalidationCommand } = require('@aws-sdk/client-cloudfront');
+
+          exports.handler = async () => {
+            const client = new CloudFrontClient({});
+            const command = new CreateInvalidationCommand({
+              DistributionId: process.env.DISTRIBUTION_ID,
+              InvalidationBatch: {
+                Paths: {
+                  Quantity: 1,
+                  Items: ['/*'],
+                },
+                CallerReference: Date.now().toString(),
+              },
+            });
+            try {
+              const response = await client.send(command);
+              console.log('Invalidation created:', response);
+            } catch (error) {
+              console.error('Error creating invalidation:', error);
+            }
+          };
+      Runtime: nodejs18.x
+      Environment:
+        Variables:
+          DISTRIBUTION_ID: !Ref MyDistribution
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !If
+        - CreateCertificateAndRecord
+        - !Sub "${CloudFrontInvalidationLambdaName}-lambda-execution-role"
+        - !Sub "${CloudFrontInvalidationLambdaName}-lambda-execution-role-liff"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: AllowCloudFrontInvalidation
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudfront:CreateInvalidation
+                Resource: "*"
+Conditions:
+  IsEmptyDomainName: !Equals [!Ref DomainName, ""]
+  IsEmptyHostedZoneId: !Equals [!Ref HostedZoneId, ""]
+  CreateCertificateAndRecord:
+    !And [
+      !Not [!Condition IsEmptyDomainName],
+      !Not [!Condition IsEmptyHostedZoneId],
+    ]
+
+Outputs:
+  CloudFrontDistribution:
+    Value: !GetAtt MyDistribution.DomainName
+    Description: "The URL of the CloudFront distribution"
+  WebsiteURL:
+    Value: !If
+      - IsEmptyDomainName
+      - "Domain name not provided"
+      - !Sub "https://${DomainName}"
+    Description: "The URL of the website"

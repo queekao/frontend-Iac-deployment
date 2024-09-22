@@ -1,0 +1,80 @@
+/* BUTTON */
+.form {
+  margin: 1rem 0;
+  padding: 1rem 1.5rem;
+  height: 20rem;
+  overflow: auto;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.control {
+  margin-bottom: 0.5rem;
+}
+
+.control label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  display: block;
+  color: #302708;
+}
+
+.control input {
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 20rem;
+  max-width: 100%;
+  margin-top: 0.5rem;
+}
+
+.actions .submit {
+  border: 1px solid #5a1a01;
+  background-color: #5a1a01;
+  color: white;
+}
+
+.actions .submit:hover,
+.actions .submit:active {
+  background-color: #7a2706;
+}
+
+.invalid label {
+  color: #ca3e51;
+}
+
+.invalid input {
+  border-color: #da4a41;
+  background-color: #ffeff1;
+}
+.actions {
+  text-align: right;
+}
+.actions button {
+  font: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #5b4b10;
+  padding: 0.5rem 2rem;
+  border-radius: 25px;
+  margin-left: 1rem;
+}
+
+.actions button:hover,
+.actions button:active {
+  background-color: #302708;
+  border-color: #302708;
+  color: white;
+}
+.actions .confirm {
+  background-color: #5b4b10;
+  color: white;
+}
+.actions .cancel {
+  color: #5b4b10;
+}
+/* Error Text */
+.error {
+  color: #302708;
+  margin-top: 0.5rem;
+}
