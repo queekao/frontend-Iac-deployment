@@ -20,6 +20,7 @@ Before using this template, make sure you have the following toolkits installed:
      ```bash
      brew install jq
      ```
+3. > You need to modify the `foodApp.json` or `foodAppLiff.json` to match your environment settings in both directories before running the commands below. Alternatively, you can define your own application settings, as it is not restricted to my default build folder.
 
 ## Configuration
 
@@ -71,5 +72,6 @@ Before using this template, make sure you have the following toolkits installed:
 
 - **feat**: A new feature
 - **fix**: A bug fix
+- **update**: A modification but not adding new feature
 - **perf**: A code change that improves performance
 - **refactor**: A code change that neither fixes a bug nor adds refactor the code
