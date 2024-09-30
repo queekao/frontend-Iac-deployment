@@ -83,6 +83,7 @@ Resources:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
           CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized ID
+          CompressObjectsAutomatically: true
           AllowedMethods:
             - GET
             - HEAD
