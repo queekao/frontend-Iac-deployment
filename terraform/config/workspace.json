@@ -1,0 +1,11 @@
+{
+    "data": {
+        "attributes": {
+            "name": "frontend-testing",
+            "description": "A description of your workspace",
+            "auto-apply": false,
+            "working-directory": ""
+        },
+        "type": "workspaces"
+    }
+}

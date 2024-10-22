@@ -1,0 +1,9 @@
+{
+    "data": {
+        "type": "organizations",
+        "attributes": {
+            "name": "infra-frontend-testing",
+            "email": "<your-terraform-register-email>"
+        }
+    }
+}

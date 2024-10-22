@@ -22,6 +22,8 @@ Before using this template, make sure you have the following toolkits installed:
      ```
 3. > You need to modify the `foodApp.json` or `foodAppLiff.json` to match your environment settings in both directories before running the commands below. Alternatively, you can define your own application settings, as it is not restricted to my default build folder.
 
+4. > To use terraform, you need to install the **[terrafrom cli](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)** and register **[an terraform account](https://app.terraform.io/session)**
+
 ## Configuration
 
 ```plaintext

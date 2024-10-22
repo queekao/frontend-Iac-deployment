@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "terraform:check": "terraform -chdir=infra/terraform fmt -check",
+        "terraform:init": "terraform -chdir=infra/terraform init -upgrade",
+        "terraform:plan": "terraform -chdir=infra/terraform plan -out=planned_changes.tfplan",
+        "terraform:validate": "terraform -chdir=infra/terraform validate",
+        "terraform:apply": "terraform -chdir=infra/terraform apply planned_changes.tfplan",
+        "terraform:destroy": "terraform -chdir=infra/terraform destroy"
+    }
+}

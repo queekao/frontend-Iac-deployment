@@ -1,0 +1,11 @@
+# project setting
+aws_region = "<aws-region>"
+domain_name = "<route53-a-record-domain>"
+bucket_name = "<new-bucket-name>"
+cloudfront_name = "<new-cloudfront-name>"
+account_id = "<aws-account-id>"
+certificate_id = "<acm-certificate-id>"
+hosted_zone_id = "<route53-hosted-zone>"
+aws_access_key = "<session-secret-key>"
+aws_secret_key = "<session-secret-key>"
+token = "<session-token>"

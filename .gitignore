@@ -1,3 +1,10 @@
 node_modules
 .DS_Store
 liff_output.txt
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+planned_changes.tfplan
+terraform.tfvars
+creds.json
